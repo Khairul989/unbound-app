@@ -21,7 +21,7 @@ class _ProductPageState extends State<ProductPage> {
               child: Column(
                 children: [
                   Container(
-                    height: s.height,
+                    height: s.height * 0.5,
                     width: s.width * 0.9,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
@@ -32,13 +32,20 @@ class _ProductPageState extends State<ProductPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Product Details",
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Text(
+                              "Product Details",
+                              style: TextStyle(fontSize: 25),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: s.height * 0.05,
+                  ),
                 ],
               ),
             )

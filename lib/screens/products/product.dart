@@ -13,10 +13,10 @@ class _ProductState extends State<Product> {
   bool isSelected = true;
 
   List<String> photos = [
-    'assets/images/burger1.jpg',
-    'assets/images/burger2.jpg',
-    'assets/images/burger3.jpg',
-    'assets/images/burger4.jpg'
+    'assets/images/m4.jpg',
+    'assets/images/m2.jpg',
+    'assets/images/m3.jpg',
+    'assets/images/m1.jpg'
   ];
 
   void _previousImage() {

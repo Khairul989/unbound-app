@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unbound/screens/products/product.dart';
+import 'package:unbound/screens/products/product_detail.dart';
+import 'package:unbound/screens/products/userReview.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -11,41 +13,112 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     Size s = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[300],
       appBar: buildAppBar(s),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Product(),
             Container(
-              child: Column(
+              width: s.width,
+              height: s.height * 0.80,
+              child: ListView(
                 children: [
-                  Container(
-                    height: s.height * 0.5,
-                    width: s.width * 0.9,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: s.width * 0.05),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Text(
-                              "Product Details",
-                              style: TextStyle(fontSize: 25),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   SizedBox(
                     height: s.height * 0.05,
                   ),
+                  Product(),
+                  SizedBox(
+                    height: s.height * 0.02,
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.only(bottom: 20, left: s.width * 0.03),
+                          width: s.width * 0.9,
+                          child: Text(
+                            "Product Details",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                        ProductDetail(),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.only(bottom: 20, left: s.width * 0.03),
+                          width: s.width * 0.9,
+                          child: Text(
+                            "User Reviews",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                        UserReivew(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: s.height * 0.12,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: s.width * 0.5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "SubTotal:",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.brown),
+                              ),
+                              Text(
+                                "RM75.00",
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.brown),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: s.width * 0.45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: s.width * 0.3,
+                          decoration: BoxDecoration(color: Colors.brown),
+                          child: FlatButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Buy Now",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             )

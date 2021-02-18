@@ -1,4 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
+List<String> photos = [
+  'assets/images/m4.jpg',
+  'assets/images/m2.jpg',
+  'assets/images/m3.jpg',
+  'assets/images/m1.jpg'
+];
 
 class Product extends StatefulWidget {
   @override
@@ -7,35 +15,56 @@ class Product extends StatefulWidget {
 
 class _ProductState extends State<Product> {
   int photoIndex = 0;
-
   int quantity = 1;
-
   bool isSelected = true;
+  bool isSelectedSizeS = true;
+  bool isSelectedSizeM = false;
+  bool isSelectedSizeL = false;
+  bool isSelectedSizeXL = false;
 
-  List<String> photos = [
-    'assets/images/m4.jpg',
-    'assets/images/m2.jpg',
-    'assets/images/m3.jpg',
-    'assets/images/m1.jpg'
-  ];
+  bool color1 = true;
+  bool color2 = false;
+  bool color3 = false;
 
-  void _previousImage() {
-    setState(() {
-      photoIndex = photoIndex > 0 ? photoIndex - 1 : 0;
-    });
-  }
-
-  void _nextImage() {
-    setState(() {
-      photoIndex = photoIndex < photos.length - 1 ? photoIndex + 1 : photoIndex;
-    });
-  }
+  final List<Widget> imageSliders = photos
+      .map((item) => Container(
+            child: Container(
+              margin: EdgeInsets.all(5.0),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  child: Stack(
+                    children: <Widget>[
+                      Image.asset(item, fit: BoxFit.cover, width: 1000.0),
+                      Positioned(
+                        bottom: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(200, 0, 0, 0),
+                                Color.fromARGB(0, 0, 0, 0)
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                        ),
+                      ),
+                    ],
+                  )),
+            ),
+          ))
+      .toList();
 
   @override
   Widget build(BuildContext context) {
     Size s = MediaQuery.of(context).size;
     return Container(
-      height: s.height * 1.12,
+      height: s.height * 1.08,
       width: s.width,
       child: Column(
         children: [
@@ -53,22 +82,38 @@ class _ProductState extends State<Product> {
               child: Column(
                 children: [
                   Container(
-                    height: s.height * 0.3,
+                    margin: EdgeInsets.only(top: s.height * 0.05),
                     width: s.width * 0.9,
-                    decoration: BoxDecoration(
-                        color: Colors.orange[100],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
-                        ),
-                        image: DecorationImage(
-                            image: AssetImage(photos[photoIndex]),
-                            fit: BoxFit.cover)),
+                    child: CarouselSlider(
+                      items: imageSliders,
+                      options: CarouselOptions(
+                          autoPlay: false,
+                          enlargeCenterPage: false,
+                          aspectRatio: 2.0,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              photoIndex = index;
+                            });
+                          }),
+                    ),
                   ),
-                  Container(
-                    height: s.height * 0.05,
-                    child: SelectedPhoto(
-                        numberOfDots: photos.length, photoIndex: photoIndex),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: photos.map((url) {
+                      int index = photos.indexOf(url);
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: photoIndex == index
+                              ? Color.fromRGBO(0, 0, 0, 0.9)
+                              : Color.fromRGBO(0, 0, 0, 0.4),
+                        ),
+                      );
+                    }).toList(),
                   ),
                   Container(
                     height: s.height * 0.05,
@@ -150,7 +195,7 @@ class _ProductState extends State<Product> {
                     ),
                   ),
                   Container(
-                    height: s.height * 0.1,
+                    margin: EdgeInsets.only(bottom: 10),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: s.width * 0.05),
                       child: Row(
@@ -200,9 +245,15 @@ class _ProductState extends State<Product> {
                       child: Row(
                         children: [
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                color1 = true;
+                                color2 = false;
+                                color3 = false;
+                              });
+                            },
                             child: ColorDot(
-                              isSelected: true,
+                              isSelected: color1,
                               color: Colors.pink[100],
                             ),
                           ),
@@ -210,18 +261,32 @@ class _ProductState extends State<Product> {
                             width: s.width * 0.02,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                color1 = false;
+                                color2 = true;
+                                color3 = false;
+                              });
+                            },
                             child: ColorDot(
-                              color: Colors.yellow[200],
+                              isSelected: color2,
+                              color: Colors.red,
                             ),
                           ),
                           SizedBox(
                             width: s.width * 0.02,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                color1 = false;
+                                color2 = false;
+                                color3 = true;
+                              });
+                            },
                             child: ColorDot(
-                              color: Colors.green[200],
+                              isSelected: color3,
+                              color: Colors.green,
                             ),
                           )
                         ],
@@ -256,18 +321,33 @@ class _ProductState extends State<Product> {
                       child: Row(
                         children: [
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                isSelectedSizeS = true;
+                                isSelectedSizeM = false;
+                                isSelectedSizeL = false;
+                                isSelectedSizeXL = false;
+                              });
+                            },
                             child: ColorBox(
                               text: "S",
-                              isSelected: true,
+                              isSelected: isSelectedSizeS,
                             ),
                           ),
                           SizedBox(
                             width: s.width * 0.02,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                isSelectedSizeS = false;
+                                isSelectedSizeM = true;
+                                isSelectedSizeL = false;
+                                isSelectedSizeXL = false;
+                              });
+                            },
                             child: ColorBox(
+                              isSelected: isSelectedSizeM,
                               text: "M",
                             ),
                           ),
@@ -275,8 +355,16 @@ class _ProductState extends State<Product> {
                             width: s.width * 0.02,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                isSelectedSizeS = false;
+                                isSelectedSizeM = false;
+                                isSelectedSizeL = true;
+                                isSelectedSizeXL = false;
+                              });
+                            },
                             child: ColorBox(
+                              isSelected: isSelectedSizeL,
                               text: "L",
                             ),
                           ),
@@ -284,8 +372,16 @@ class _ProductState extends State<Product> {
                             width: s.width * 0.02,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                isSelectedSizeS = false;
+                                isSelectedSizeM = false;
+                                isSelectedSizeL = false;
+                                isSelectedSizeXL = true;
+                              });
+                            },
                             child: ColorBox(
+                              isSelected: isSelectedSizeXL,
                               text: "XL",
                             ),
                           )
@@ -409,8 +505,8 @@ class _ProductState extends State<Product> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text("Delivery"),
-                                        Text("+ RM12.00 (West Malaysia)")
+                                        Text("Delivery + RM12.00"),
+                                        Text("(West Malaysia)")
                                       ],
                                     )
                                   ],
@@ -462,9 +558,6 @@ class _ProductState extends State<Product> {
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            height: s.height * 0.05,
           ),
         ],
       ),
